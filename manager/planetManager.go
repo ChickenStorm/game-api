@@ -40,6 +40,11 @@ func GetPlayerPlanets(id uint16) []model.Planet {
 }
 
 func GetPlanet(id uint16, playerId uint16) *model.Planet {
+    /**
+     * return the planet (may return partial information.
+     * if the player is the owner of the planet all the information is there
+     * but if the player is not the owner the information is partial
+     */
     var planet model.Planet
     if err := database.
         Connection.
@@ -150,6 +155,10 @@ func addResourcesToStorage(planet model.Planet, storage *model.Storage) {
 }
 
 func UpdatePlanetSettings(planet *model.Planet, settings *model.PlanetSettings) {
+    /**
+     * update the poulation setting for a given planet for a given setting.
+     *
+     */
     if settings.ServicesPoints +
     settings.BuildingPoints +
     settings.MilitaryPoints +

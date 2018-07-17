@@ -12,6 +12,11 @@ import (
 )
 
 func GetPlanet(w http.ResponseWriter, r *http.Request) {
+    /**
+     * return the planet (may return partial information) from http request.
+     * if the player is the owner of the planet all the information is there
+     * but if the player is not the owner the information is partial
+     */
     player := context.Get(r, "player").(*model.Player)
     id, _ := strconv.ParseUint(mux.Vars(r)["id"], 10, 16)
 
@@ -19,9 +24,15 @@ func GetPlanet(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdatePlanetSettings(w http.ResponseWriter, r *http.Request) {
+    /**
+     * request from http to update setting.
+     * Parse data form the request.
+     * Check is the player is the owner of the planet before updating.
+     */
     player := context.Get(r, "player").(*model.Player)
 
     id, _ := strconv.ParseUint(mux.Vars(r)["id"], 10, 16)
+    // mux.Vars get the id associate with the route var id
     planet := manager.GetPlanet(uint16(id), player.Id)
 
     if player.Id != planet.Player.Id {
