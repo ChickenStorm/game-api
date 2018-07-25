@@ -18,3 +18,19 @@ func CreateServer(w http.ResponseWriter, r *http.Request) {
     w.WriteHeader(http.StatusCreated)
     w.Write([]byte(""))
 }
+
+
+func Regen(w http.ResponseWriter, r *http.Request) {
+    data := utils.DecodeJsonRequest(r)
+    /*server := manager.CreateServer(
+        data["name"].(string),
+        data["type"].(string),
+        data["signature"].(string),
+    )*/
+    server := manager.GetServerBySignature(data["signature"].(string))
+    factions := manager.CreateServerFactions(server, data["factions"].([]interface{}))
+    manager.RegenMap( server,factions, uint16(data["map_size"].(float64)))
+    w.WriteHeader(http.StatusCreated)
+    w.Write([]byte(""))
+}
+

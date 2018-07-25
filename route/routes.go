@@ -188,4 +188,11 @@ var routes = Routes{
 		controller.GetFactionMembers,
 		true,
 	},
+	Route{
+		"Regenerate map",
+		"PATCH",
+		"/api/servers",
+		controller.Regen,
+		false,
+	},
 }

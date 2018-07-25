@@ -28,3 +28,16 @@ func GetMapByServerId(serverId uint16) *model.Map {
     gameMap.Systems = GetMapSystems(gameMap.Id)
     return gameMap
 }
+
+func RegenMap(server *model.Server, factions []*model.Faction, size uint16) *model.Map {
+    gameMap := &model.Map{
+        Server: server,
+        ServerId: server.Id,
+        Size: size,
+    }
+    if err := database.Connection.Insert(gameMap); err != nil {
+        panic(exception.NewException("Map could not be created", err))
+    }
+    utils.GenerateMapSystems(gameMap, factions)
+    return gameMap
+}

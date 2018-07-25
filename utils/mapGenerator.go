@@ -62,7 +62,7 @@ func generateSystem(gameMap *model.Map, x uint16, y uint16) {
     }
     nbOrbits := rand.Intn(5) + MIN_PLANETS_PER_SYSTEM
     for i := 1; i <= nbOrbits; i++ {
-        go func(i int, system *model.System) {
+        go func(i int, system *model.System) { //< Go routine fail
             orbit := &model.SystemOrbit{
                 Radius: uint16(i * 100 + rand.Intn(100)),
                 System: system,
@@ -71,7 +71,7 @@ func generateSystem(gameMap *model.Map, x uint16, y uint16) {
             if err := database.Connection.Insert(orbit); err != nil {
         		panic(exception.NewException("Orbit could not be created", err))
             }
-            system.Orbits = append(system.Orbits, *orbit)
+            system.Orbits = append(system.Orbits, *orbit) //< segmentation fault
             generatePlanet(system, orbit)
         } (i, system)
     }
