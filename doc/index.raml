@@ -44,8 +44,7 @@ version: v0.1.7
             responses:
                 200:
                     body:
-                        application/json:
-                            type: !include factions/faction.raml
+                        application/json: !include factions/faction.raml
         /members:
             get:
                 responses:
@@ -69,8 +68,7 @@ version: v0.1.7
         responses:
             200:
                 body:
-                    application/json:
-                        type: !include maps/map.raml
+                    application/json: !include maps/map.raml
 
 /players:
     post:
@@ -90,15 +88,13 @@ version: v0.1.7
             responses:
                 200:
                     body:
-                        application/json:
-                            type: !include players/player.raml
+                        application/json: !include players/player.raml
     /{id}:
         get:
             responses:
                 200:
                     body:
-                        application/json:
-                            type: !include players/player.raml
+                        application/json: !include players/player.raml
         /planets:
             get:
                 responses:
@@ -114,13 +110,29 @@ version: v0.1.7
             responses:
                 200:
                     body:
-                        application/json:
-                            type: !include planets/planet.raml
+                        application/json: !include planets/planet.raml
         /settings:
-            put:
+            put: #TODO
+                body:
+                    application/json: !include planets/settings.raml
+        /building:
+            post:
+                body:
+                    application/json: !include buildings/building-input.raml
+                responses:
+                    201:
+                        body:
+                            application/json: !include buildings/building-lowlink.raml
+        /ships:
+            post: #TODO
                 body:
                     application/json:
-                        type: !include planets/settings.raml
+                responses:
+                    201:
+                        body:
+                            application/json:
+            /constructing:
+                get: #TODO
 /servers:
     post:
         body:
@@ -148,5 +160,34 @@ version: v0.1.7
             responses:
                 200:
                     body:
+                        application/json: !include maps/system.raml
+/me:
+    /ship-models:
+        get:
+            responses:
+                200:
+                    body:
                         application/json:
-                            type: !include maps/system.raml
+                            type: object[]
+                            items: !include ships/shipModel-nolink.raml
+        post:
+            body:
+                application/json:
+                    type: object
+                    properties:
+                        frame : string
+                        name: string
+                        slots:
+                            type : object[]
+                            items : !include ships/slot-nolink.raml
+            responses:
+                201:
+                    body:
+                        application/json: !include ships/shipModel-lowlink.raml
+        /{id}:
+            get:
+                responses:
+                    200:
+                        body:
+                            application/json: !include ships/shipModel-nolink.raml
+                                
