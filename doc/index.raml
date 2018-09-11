@@ -2,6 +2,9 @@
 title: Kalaxia Game API
 baseUri: /api
 version: v0.1.7
+securitySchemes: 
+    bearer-token: !include security.raml
+securedBy: bearer-token
 
 /auth:
     post:
@@ -30,7 +33,7 @@ version: v0.1.7
                         description: "The crypted JWT token for the user session"
                         type: string
                         example: "sq5f4g65df565sq2d652fqsd2qs52d56qsd"
-
+        securedBy: null
 /factions:
     get:
         responses:
@@ -164,7 +167,7 @@ version: v0.1.7
                 body:
                     application/json:
                         type: !include servers/server.raml
-
+        securedBy: null
 /systems:
     /{id}:
         get:
@@ -237,20 +240,20 @@ version: v0.1.7
                                 type: string
                                 default : ""
                         
-        delete:
-            description: move the ships with the given id into the hangard
-            body:
-                application/json:
-                    type : object
-                    properties:    
+            delete:
+                description: move the ships with the given id into the hangard
+                body:
+                    application/json:
+                        type : object
+                        properties:    
 
-                        data-ships: integer[]
-            responses:
-                204:
-                    body:
-                        application/json:
-                            type: string
-                            default : Deleted
+                            data-ships: integer[]
+                responses:
+                    204:
+                        body:
+                            application/json:
+                                type: string
+                                default : Deleted
         /journey:
             post:
                 description : send fleet on journey sith steps given in input
@@ -355,25 +358,11 @@ version: v0.1.7
             201:
                 body:
                     application/json: !include fleets/fleet-lowlink.raml
-    /ships:
-        # /{id}:
-        #     delete:
-        #         body:
-        #             application/json:
-        #                 type: object
-        #                 properties:
-        #                     data-ships: integer[]
-        #         responses:
-        #             204:
-        #                 body:
-        #                     application/json:
-        #                         type: string
-        #                         default : Deleted
-        delete:
-            description: move ships with selected id to hangar
-            responses:
-                204:
-                    body:
-                        application/json:
-                            type: string
-                            default : Deleted
+    delete:
+        description: Delete fleet
+        responses:
+            204:
+                body:
+                    application/json:
+                        type: string
+                        default : Deleted
